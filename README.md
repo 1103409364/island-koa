@@ -1,4 +1,4 @@
 # island-koa
 koa example
-$ yarn
-$ yarn dev
+### $ yarn
+### $ yarn dev
