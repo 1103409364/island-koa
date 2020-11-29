@@ -1,0 +1,36 @@
+@hostname = http://localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+### 第一个HTTP测试
+
+//httpbin.org 这个网站能测试 HTTP 请求和响应的各种信息，
+//比如 cookie、ip、headers 和登录验证等，且支持 GET、POST
+// 等多种方法，对 web 开发和测试很有帮助。
+
+GET http://httpbin.org/ip
+
+### classic
+
+GET {{host}}/v1/classic/latest
+
+### book
+
+GET {{host}}/v1/book/latest
+
+### 发送form-urlencoded数据
+
+POST https://httpbin.org/post
+Content-Type: application/x-www-form-urlencoded
+//这里必须有一空行
+
+a=1&b=2
+
+### 发送JSON数据
+
+POST {{host}}/v1/testparams/classic/latest
+Content-Type: application/json
+//这里必须有一空行
+
+{
+  "query": {"a":1,"b":2}
+}
