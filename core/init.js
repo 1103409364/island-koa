@@ -1,6 +1,7 @@
 // const registerRouter = require(`${process.cwd()}/app/routes`); // "../app/routes"
 // import registerRouter from "../app/routes/index.js";
 const { default: registerRouter } = await import(`file://${process.cwd()}/app/routes/index.js`);
+const { default: config } = await import(`file://${process.cwd()}/config/config.js`);
 // console.log(`file:\\\\${process.cwd()}\\app\\routes`);
 // 路径变动问题：
 // 使用路径 path config
@@ -13,6 +14,7 @@ class InitManager {
     InitManager.app = app;
     InitManager.initLoadRouters();
     InitManager.loadHttpException();
+    InitManager.loadConfig();
   }
   static initLoadRouters() {
     // console.log(registerRouter());
@@ -20,6 +22,9 @@ class InitManager {
   }
   static loadHttpException() {
     global.errors = errors;
+  }
+  static loadConfig() {
+    global.config = config;
   }
 }
 

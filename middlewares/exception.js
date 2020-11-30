@@ -4,6 +4,9 @@ const catchError = async (ctx, next) => {
   try {
     await next();
   } catch (error) {
+    if (global.config.environment === 'dev') {
+      throw error;
+    }
     // error 堆栈调用信息
     // error 简化 清晰明了的信息
     // HTTP Status Code 2xx 3xx 4xx 5xx
