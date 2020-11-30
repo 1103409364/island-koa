@@ -29,8 +29,8 @@ a=1&b=2
 
 POST {{host}}/v1/11/classic/latest
 Content-Type: application/json
-//这里必须有一空行
+//这里必须有一空行 不能加尾逗号 JSON 格式错误导致发送请求失败
 
 {
-  "username": "sfsadf"
+  "username": "aa32422342a"
 }
