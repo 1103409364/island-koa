@@ -27,10 +27,10 @@ a=1&b=2
 
 ### 发送JSON数据
 
-POST {{host}}/v1/testparams/classic/latest
+POST {{host}}/v1/11/classic/latest
 Content-Type: application/json
 //这里必须有一空行
 
 {
-  "query": {"a":1,"b":2}
+  "username": "sfsadf"
 }

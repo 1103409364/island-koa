@@ -17,7 +17,7 @@ const catchError = async (ctx, next) => {
     // 全局 try catch
     if (error instanceof global.errors.HttpException) {
       ctx.body = {
-        msg: error.message,
+        msg: error.msg,
         code: error.code,
         requestUrl: `${ctx.method} ${ctx.path}`,
       };
