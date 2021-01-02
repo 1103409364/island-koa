@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <span>test beforeunload、unload、pagehide 端口 3000</span>
+    <script>
+      /* 是否是手机 */
+      function isMobile() {
+        let reg = /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i;
+        let flag = reg.test(window.navigator.userAgent);
+        return flag;
+      }
+      function isIos() {
+        // let iOS = ['iPad', 'iPhone', 'iPod'].indexOf(navigator.platform) >= 0;
+        let ua = window.navigator.userAgent.toLowerCase();
+        return ua.indexOf('iphone') > -1;
+      }
+      function addEvent() {
+        if (isMobile()) {
+          // 亮屏/息屏 切到后台 ios 14 以下不支持冒泡
+          // https://www.caniuse.com/?search=visibilitychange
+          document.addEventListener('visibilitychange', () => {});
+        }
+        // 关闭前发请求 beforeunload、unload、pagehide 都需要同步请求 fetch keepalive 或者 sendBeacon
+        // https://zh.javascript.info/fetch-api
+        // https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/sendBeacon
+
+        /******1 beforeunload ******/
+        // https://www.caniuse.com/?search=beforeunload
+        // https://developer.mozilla.org/zh-CN/docs/Web/API/Window/onbeforeunload
+        // beforeunload windows 刷新 关闭触发，android 刷新触发，ios 不触发。
+        // 弹窗条件：1 e.returnValue = 字符串; 2 用户与页面交互
+        window.addEventListener('beforeunload', (e) => {
+          fetch('http://192.168.2.119:3000/v1/book/latest', { keepalive: true });
+          let confirmationMessage = '关闭'; // chrome 浏览器不会显示自定义消息
+          e = e || window.event;
+          // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+  不需要弹窗，注释这一行
+          e && (e.returnValue = confirmationMessage);
+          // 兼容 Gecko + Webkit, Safari, Chrome
+          return confirmationMessage;
+        });
+
+        /******2 unload ******/
+        // https://www.caniuse.com/?search=unload
+        // unload ios android windows 关闭、刷新都可以触发，无弹窗
+        window.addEventListener('unload', (e) => {
+          fetch('http://192.168.2.119:3000/v1/book/latest', { keepalive: true });
+        });
+
+        /******3 pagehide ******/
+        // https://www.caniuse.com/?search=pagehide
+        //pagehide ios 14+ android chrome81+ windows 关闭、刷新都可以触发，无弹窗
+        window.addEventListener('pagehide', (e) => {
+          fetch('http://192.168.2.119:3000/v1/book/latest', { keepalive: true });
+        });
+      }
+      addEvent();
+    </script>
+  </body>
+</html>

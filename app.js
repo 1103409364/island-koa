@@ -3,6 +3,7 @@
 // const InitManager = require("./core/init");
 
 import Koa from 'koa';
+import staticServe from 'koa-static';
 import parser from 'koa-bodyparser';
 import InitManager from './core/init.js';
 import catchError from './middlewares/exception.js';
@@ -10,8 +11,11 @@ import catchError from './middlewares/exception.js';
 const app = new Koa();
 app.use(catchError); //全局异常处理 中间件 AOP 面向切面编程
 app.use(parser()); //参数处理
+app.use(staticServe('public'));
 
 InitManager.initCore(app);
+// import './app/modles/user.js';
+
 // app.use(registerRouter());
 // app.use(async (ctx, next) => {
 //   console.log(ctx.path);
